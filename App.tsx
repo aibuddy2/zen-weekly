@@ -17,11 +17,11 @@ const App: React.FC = () => {
       }
     }
     
-    // Default initialization: Every day gets the template habits
+    // Initial load: Each day gets a fresh copy of the template
     const initial: Partial<WeeklyData> = {};
     DAYS.forEach(day => {
       initial[day] = INITIAL_HABITS_TEMPLATE.map((h, i) => ({
-        id: `init-${day}-${i}-${Date.now()}`,
+        id: `init-${day}-${i}-${Date.now()}-${Math.random()}`,
         label: h.label,
         time: h.time,
         completed: false
@@ -65,13 +65,15 @@ const App: React.FC = () => {
 
   const resetProgress = useCallback(() => {
     if (window.confirm('Reset all checkboxes for the week? (Your habit list will remain unchanged)')) {
-      const resetData = { ...data };
-      DAYS.forEach(day => {
-        resetData[day] = resetData[day].map(task => ({ ...task, completed: false }));
+      setData(prev => {
+        const nextData = { ...prev };
+        DAYS.forEach(day => {
+          nextData[day] = nextData[day].map(task => ({ ...task, completed: false }));
+        });
+        return nextData;
       });
-      setData(resetData);
     }
-  }, [data]);
+  }, []);
 
   const stats = useMemo(() => {
     let totalTasks = 0;

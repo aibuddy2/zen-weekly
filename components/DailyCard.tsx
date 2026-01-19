@@ -55,7 +55,7 @@ const DailyCard: React.FC<DailyCardProps> = ({
         <ProgressBar progress={percentage} size="md" color={isToday ? "emerald" : "indigo"} />
       </div>
 
-      <div className="flex-1 space-y-3 custom-scrollbar overflow-y-auto pr-1">
+      <div className="flex-1 space-y-3 custom-scrollbar overflow-y-auto pr-1 min-h-[200px]">
         {tasks.map((task) => (
           <div key={task.id} className="group relative flex items-center justify-between gap-3 bg-slate-950/40 p-3 rounded-2xl border border-slate-800/50 hover:border-slate-700 transition-colors">
             <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
@@ -80,9 +80,12 @@ const DailyCard: React.FC<DailyCardProps> = ({
               </div>
             </label>
             <button 
-              onClick={() => onDelete(task.id)}
-              className="p-2 text-slate-700 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all opacity-0 group-hover:opacity-100 md:opacity-0 touch-none:opacity-100"
-              title="Delete task"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(task.id);
+              }}
+              className="p-2 text-slate-700 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all opacity-40 group-hover:opacity-100"
+              title="Delete habit"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
